@@ -17,6 +17,7 @@ end
 
 class Board
   attr_accessor :status
+  
   def initialize
     @status = {}  
     (1..9).each{|position| status[position] = ' '}  
@@ -39,16 +40,13 @@ class Board
   end
 
   def input_validation(position_choose) 
-    if status.keys.include?(position_choose)
-      status[position_choose] == ' '
-    else
-      return false
-    end
+    status[position_choose] == ' '
   end
 end
 
 class Player
   attr_accessor :name, :signal
+  
   def initialize(name, signal)
     @name = name
     @signal = signal
@@ -57,6 +55,7 @@ end
 
 class Game
   attr_accessor :board, :first_player, :player_turn, :player, :computer
+  
   def initialize
     @board = Board.new
     @player = Player.new('Vic','X')
@@ -70,7 +69,7 @@ class Game
     winning_lines.each do |line|
       test_line = {line[0] => board.status[line[0]],line[1] => board.status[line[1]], line[2] => board.status[line[2]]}
       if test_line.values.count(computer.signal) == 2 and test_line.values.count(' ') == 1
-        return test_line.select{ |k,v| v == ' ' }.keys.first
+        return test_line.select{ |_,v| v == ' ' }.keys.first
       end
     end
 
@@ -78,13 +77,12 @@ class Game
     winning_lines.each do |line|
       test_line = {line[0] => board.status[line[0]],line[1] => board.status[line[1]], line[2] => board.status[line[2]]}
       if test_line.values.count(player.signal) == 2 and test_line.values.count(' ') == 1
-        return test_line.select{ |k,v| v == ' ' }.keys.first
+        return test_line.select{ |_,v| v == ' ' }.keys.first
       end
     end
 
     # last make a random choise
-    random_number = Random.new
-    return random_number.rand(1..9)
+    return Random.new.rand(1..9)
   end
 
   def has_result
@@ -106,9 +104,9 @@ class Game
     end
     if tie
       winner_annoucement('tie')
-      return true
+      true
     else
-      return false
+      false
     end
   end
 
@@ -182,12 +180,11 @@ class Game
     who_is_first_thread.kill
 
     if first_player == "You     "
-      return "You"
+      "You"
     else
-      return "Computer"
+      "Computer"
     end 
-  end
-  
+  end  
 end
 
 begin
